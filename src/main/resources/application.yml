@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: prod
+    default: prod
+  datasource:
+    url: jdbc:mysql://localhost:3307/{project_name}?serverTimezone=Asia/Seoul
+    username: wanted
+    password: wanted
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
+
+logging:
+  level:
+    sql: trace
+
+jwt:
+  secret:
+    key: {jwt_key}
