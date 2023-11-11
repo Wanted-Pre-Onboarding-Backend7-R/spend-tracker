@@ -1,24 +1,24 @@
-package com.wanted.spendtracker.dto;
+package com.wanted.spendtracker.dto.response;
 
-import com.wanted.spendtracker.domain.ErrorCode;
+import com.wanted.spendtracker.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class CustomErrorResponse {
 
-    private final String code;
+    private final String errorCode;
     private final String message;
 
     @Builder
-    private CustomErrorResponse(String code, String message) {
-        this.code = code;
+    private CustomErrorResponse(String errorCode, String message) {
+        this.errorCode = errorCode;
         this.message = message;
     }
 
     public static CustomErrorResponse of(ErrorCode errorCode) {
         return CustomErrorResponse.builder()
-                .code(errorCode.name())
+                .errorCode(errorCode.name())
                 .message(errorCode.getMessage())
                 .build();
     }
