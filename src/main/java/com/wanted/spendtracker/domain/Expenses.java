@@ -25,6 +25,8 @@ public class Expenses extends BaseTimeEntity {
     @Lob
     private String memo;
 
+    //전체 지출 합계 시 포함 여부
     @Column(nullable = false)
-    private boolean excludeFromTotalAmount;
+    private boolean excludeFromTotalAmount = false;
+
 }
