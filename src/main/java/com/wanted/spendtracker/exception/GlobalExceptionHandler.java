@@ -1,14 +1,12 @@
 package com.wanted.spendtracker.exception;
 
-import static com.wanted.spendtracker.domain.ErrorCode.*;
+import static com.wanted.spendtracker.exception.ErrorCode.*;
 import static org.springframework.boot.web.servlet.server.Encoding.DEFAULT_CHARSET;
 import static org.springframework.http.HttpHeaders.CONTENT_ENCODING;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import com.wanted.spendtracker.domain.CustomException;
-import com.wanted.spendtracker.domain.ErrorCode;
-import com.wanted.spendtracker.dto.CustomErrorResponse;
+import com.wanted.spendtracker.dto.response.CustomErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -84,9 +82,9 @@ public class GlobalExceptionHandler {
         return createResponseEntity(errorCode.getHttpStatus(), errorCode.name(), errorCode.getMessage());
     }
 
-    private ResponseEntity<CustomErrorResponse> createResponseEntity(HttpStatus httpStatus, String code, String message) {
+    private ResponseEntity<CustomErrorResponse> createResponseEntity(HttpStatus httpStatus, String errorCode, String message) {
         CustomErrorResponse customErrorResponse = CustomErrorResponse.builder()
-                .code(code)
+                .errorCode(errorCode)
                 .message(message)
                 .build();
         return ResponseEntity

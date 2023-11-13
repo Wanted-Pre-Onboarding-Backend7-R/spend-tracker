@@ -1,4 +1,4 @@
-package com.wanted.spendtracker.domain;
+package com.wanted.spendtracker.exception;
 
 import lombok.Getter;
 
