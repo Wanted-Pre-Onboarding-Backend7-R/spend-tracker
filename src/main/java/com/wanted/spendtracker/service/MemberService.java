@@ -18,7 +18,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long signup(MemberSignUpRequest memberSignUpRequest) {
+    public Long signUp(MemberSignUpRequest memberSignUpRequest) {
         Member member = createMember(memberSignUpRequest);
         try {
             memberRepository.save(member);
