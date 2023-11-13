@@ -19,7 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("api/members")
-    public ResponseEntity<Void> signup(@Valid @RequestBody MemberSignUpRequest memberSignUpRequest) {
+    public ResponseEntity<Void> signUp(@Valid @RequestBody MemberSignUpRequest memberSignUpRequest) {
         PasswordValidator.validatePassword(memberSignUpRequest);
         Long memberId = memberService.signup(memberSignUpRequest);
         return ResponseEntity.created(URI.create("api/members/" + memberId)).build();
