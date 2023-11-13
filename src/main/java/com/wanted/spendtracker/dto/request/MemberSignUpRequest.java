@@ -1,8 +1,7 @@
 package com.wanted.spendtracker.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberSignUpRequest {
 
     @NotBlank(message = "MEMBER_ACCOUNT_NAME_BLANK")
-    @Min(value = 2, message = "MEMBER_ACCOUNT_NAME_SHORT")
-    @Max(value = 20, message = "MEMBER_ACCOUNT_NAME_LONG")
+    @Size(min = 2, max = 20, message = "MEMBER_ACCOUNT_NAME_LENGTH_INVALID")
     private String accountName;
 
     @NotBlank(message = "MEMBER_PASSWORD_BLANK")
