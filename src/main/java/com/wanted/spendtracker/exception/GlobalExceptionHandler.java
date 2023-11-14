@@ -1,21 +1,23 @@
 package com.wanted.spendtracker.exception;
 
-import static com.wanted.spendtracker.exception.ErrorCode.*;
-import static org.springframework.boot.web.servlet.server.Encoding.DEFAULT_CHARSET;
-import static org.springframework.http.HttpHeaders.CONTENT_ENCODING;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
 import com.wanted.spendtracker.dto.response.CustomErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static com.wanted.spendtracker.exception.ErrorCode.*;
+import static org.springframework.boot.web.servlet.server.Encoding.DEFAULT_CHARSET;
+import static org.springframework.http.HttpHeaders.CONTENT_ENCODING;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,6 +53,15 @@ public class GlobalExceptionHandler {
         return createResponseEntity(BAD_REQUEST, null, e.getMessage());
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<CustomErrorResponse> handleAuthenticationException(AuthenticationException e) {
+        logError(e);
+        if (e.getCause() instanceof CustomException customException) {
+            return createResponseEntity(customException.getErrorCode());
+        }
+        return createResponseEntity(AUTH_AUTHENTICATION_FAILED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomErrorResponse> handleException(Exception e) {
         logError(e);
@@ -82,9 +93,9 @@ public class GlobalExceptionHandler {
         return createResponseEntity(errorCode.getHttpStatus(), errorCode.name(), errorCode.getMessage());
     }
 
-    private ResponseEntity<CustomErrorResponse> createResponseEntity(HttpStatus httpStatus, String errorCode, String message) {
+    private ResponseEntity<CustomErrorResponse> createResponseEntity(HttpStatus httpStatus, String code, String message) {
         CustomErrorResponse customErrorResponse = CustomErrorResponse.builder()
-                .errorCode(errorCode)
+                .code(code)
                 .message(message)
                 .build();
         return ResponseEntity
