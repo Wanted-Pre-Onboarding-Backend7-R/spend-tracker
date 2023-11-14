@@ -9,10 +9,12 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static com.wanted.spendtracker.exception.ErrorCode.*;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -27,8 +29,11 @@ public class JwtTokenProvider {
     private final long expirationTimeMillis;
     private final Key key;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     public JwtTokenProvider(@Value("${security.jwt.secret-key}") final String secretKey,
-                            @Value("${security.jwt.expire-period}") final Long expirationTimeMillis) {
+                            @Value("${security.jwt.expire-period}") final Long expirationTimeMillis, RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
         byte[] secretByteKey = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
         this.expirationTimeMillis = expirationTimeMillis;
@@ -36,7 +41,7 @@ public class JwtTokenProvider {
 
     public TokenCreateResponse generateToken(final Member member) {
         final String accessToken = generateAccessToken(member);
-        final String refreshToken = generateRefreshToken();
+        final String refreshToken = generateRefreshToken(member);
         return TokenCreateResponse.builder()
                 .grantType(GRANTTYPE_BEARER)
                 .accessToken(accessToken)
@@ -83,13 +88,22 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private String generateRefreshToken() {
+    private String generateRefreshToken(final Member member) {
         final Date expiration = new Date(System.currentTimeMillis() + expirationTimeMillis * 24 * 7);
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setExpiration(expiration)
                 .signWith(key, HS256)
                 .compact();
+
+        // redis에 저장
+        redisTemplate.opsForValue().set(
+                member.getAccountName(),
+                refreshToken,
+                expirationTimeMillis * 24 * 7,
+                TimeUnit.MILLISECONDS
+        );
+
+        return refreshToken;
     }
 
 }
-
