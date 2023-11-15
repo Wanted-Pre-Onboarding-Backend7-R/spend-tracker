@@ -40,7 +40,7 @@ public class AuthService {
         if (redisTemplate.opsForValue().get(accountName) != null) {
             redisTemplate.delete(accountName);
         }
-        redisTemplate.opsForValue().set(accountName, "logout", Duration.ofMillis(expiration));
+        redisTemplate.opsForValue().set(accessToken, "logout", Duration.ofMillis(expiration));
     }
 
 }
