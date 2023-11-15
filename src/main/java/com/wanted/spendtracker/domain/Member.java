@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.wanted.spendtracker.domain.Role.ROLE_USER;
 
 @Getter
@@ -27,6 +30,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Budget> budgets = new ArrayList<>();
 
     @Builder
     private Member(String accountName, String password, Role role) {
