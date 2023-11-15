@@ -34,6 +34,12 @@ public enum ErrorCode {
     AUTH_MEMBER_NOT_EXISTS("존재하지 않는 사용자입니다.", BAD_REQUEST),
     AUTH_PASSWORD_BLANK("비밀번호는 공백일 수 없습니다.", BAD_REQUEST),
 
+    BUDGET_MONTH_EMPTY("예산 월이 존재하지 않습니다.", BAD_REQUEST),
+    BUDGET_MONTH_INVALID("예산 월이 유효하지 않습니다.", BAD_REQUEST),
+    BUDGET_CATEGORY_NOT_EXISTS("카테고리가 존재하지 않습니다.", BAD_REQUEST),
+    BUDGET_AMOUNT_EMPTY("예산 금액이 설정되지 않았습니다.", BAD_REQUEST),
+    BUDGET_AMOUNT_INVALID("예산 금액이 유효하지 않습니다.", BAD_REQUEST),
+    BUDGET_REQUEST_EMPTY("예산 금액 요청이 존재하지 않습니다.", BAD_REQUEST),
     ;
 
     private final String message;
