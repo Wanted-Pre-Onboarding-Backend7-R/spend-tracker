@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.wanted.spendtracker.exception.ErrorCode.AUTH_AUTHENTICATION_FAILED;
 import static com.wanted.spendtracker.exception.ErrorCode.AUTH_JWT_UNPRIVILEGED;
 import static com.wanted.spendtracker.infrastructure.JwtTokenProvider.CLAIMS_AUTH;
 
@@ -38,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (redisTemplate.opsForValue().get(token) == null) {
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            } else throw new CustomException(AUTH_AUTHENTICATION_FAILED);
         }
 
         filterChain.doFilter(request, response);
