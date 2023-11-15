@@ -74,7 +74,7 @@ class MemberControllerTest {
                         .content(content))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errorCode").value(errorCode.name()))
+                .andExpect(jsonPath("$.code").value(errorCode.name()))
                 .andExpect(jsonPath("$.message").value(errorCode.getMessage()))
                 .andDo(print())
                 .andReturn();
