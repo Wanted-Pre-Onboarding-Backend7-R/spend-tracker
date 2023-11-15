@@ -7,10 +7,13 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -49,7 +52,7 @@ public class JwtTokenProvider {
                 .build();
     }
 
-    public void validateToken(final String token) {
+    public boolean validateToken(final String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -64,6 +67,7 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             throw new CustomException(AUTH_JWT_CLAIMS_EMPTY, e);
         }
+        return true;
     }
 
     public Claims parseClaims(final String accessToken) {
@@ -76,6 +80,25 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(GRANTTYPE_BEARER)) {
+            return bearerToken.substring(GRANTTYPE_BEARER.length() + 1);
+        }
+        return null;
+    }
+
+    public Long getExpiration(String accessToken) {
+        // accessToken 남은 유효시간
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(accessToken)
+                .getBody()
+                .getExpiration();
+        return (expiration.getTime() - System.currentTimeMillis());
     }
 
     private String generateAccessToken(final Member member) {
