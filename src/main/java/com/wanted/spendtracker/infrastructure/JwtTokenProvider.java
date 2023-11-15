@@ -58,6 +58,7 @@ public class JwtTokenProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token).getBody();
+            return true;
         } catch (SecurityException | MalformedJwtException e) {
             throw new CustomException(AUTH_JWT_INVALID, e);
         } catch (ExpiredJwtException e) {
@@ -67,7 +68,6 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             throw new CustomException(AUTH_JWT_CLAIMS_EMPTY, e);
         }
-        return true;
     }
 
     public Claims parseClaims(final String accessToken) {
