@@ -23,4 +23,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Budget> budgets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category")
+    private List<Expenses> expenses = new ArrayList<>();
+
 }

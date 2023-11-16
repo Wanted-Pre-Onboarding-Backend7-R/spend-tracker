@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.wanted.spendtracker.exception.ErrorCode.BUDGET_CATEGORY_NOT_EXISTS;
+import static com.wanted.spendtracker.exception.ErrorCode.CATEGORY_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class BudgetService {
         List<BudgetSetRequest.BudgetRequest> budgetRequests = budgetSetRequest.getBudgetRequestList();
         for (BudgetSetRequest.BudgetRequest budgetRequest : budgetRequests) {
             Category category = categoryRepository.findById(budgetRequest.getCategoryId())
-                    .orElseThrow(() -> new CustomException(BUDGET_CATEGORY_NOT_EXISTS));
+                    .orElseThrow(() -> new CustomException(CATEGORY_NOT_EXISTS));
             Budget budget = Budget.of(budgetRequest.getAmount(), budgetRequest.getMonth(), member, category);
             budgetRepository.save(budget);
         }
