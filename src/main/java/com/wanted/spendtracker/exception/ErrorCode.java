@@ -21,6 +21,7 @@ public enum ErrorCode {
     MEMBER_ACCOUNT_NAME_DUPLICATED("이미 같은 이름의 계정이 존재합니다", BAD_REQUEST),
     MEMBER_ACCOUNT_NAME_LENGTH_INVALID("계정 이름은 최소 2자 이상 최대 20자 이하이어야 합니다", BAD_REQUEST),
     MEMBER_ACCOUNT_NAME_BLANK("계정 이름은 공백일 수 없습니다.", BAD_REQUEST),
+    MEMBER_NOT_SAME("해당 작성자가 아닙니다.", BAD_REQUEST),
 
     AUTH_AUTHENTICATION_FAILED("인증에 실패하셨습니다.", UNAUTHORIZED),
     AUTH_AUTHORIZATION_FAILED("권한이 없습니다.", FORBIDDEN),
@@ -34,12 +35,20 @@ public enum ErrorCode {
     AUTH_MEMBER_NOT_EXISTS("존재하지 않는 사용자입니다.", BAD_REQUEST),
     AUTH_PASSWORD_BLANK("비밀번호는 공백일 수 없습니다.", BAD_REQUEST),
 
+    CATEGORY_NOT_EXISTS("카테고리가 존재하지 않습니다.", BAD_REQUEST),
+
     BUDGET_MONTH_EMPTY("예산 월이 존재하지 않습니다.", BAD_REQUEST),
     BUDGET_MONTH_INVALID("예산 월이 유효하지 않습니다.", BAD_REQUEST),
-    BUDGET_CATEGORY_NOT_EXISTS("카테고리가 존재하지 않습니다.", BAD_REQUEST),
     BUDGET_AMOUNT_EMPTY("예산 금액이 설정되지 않았습니다.", BAD_REQUEST),
     BUDGET_AMOUNT_INVALID("예산 금액이 유효하지 않습니다.", BAD_REQUEST),
     BUDGET_REQUEST_EMPTY("예산 금액 요청이 존재하지 않습니다.", BAD_REQUEST),
+
+    EXPENSES_DATE_EMPTY("지출 날짜가 존재하지 않습니다.", BAD_REQUEST),
+    EXPENSES_EXCLUDE_FROM_TOTAL_AMOUNT_EMPTY("지출 함계 여부가 설정되지 않았습니다", BAD_REQUEST),
+    EXPENSES_AMOUNT_EMPTY("지출 금액이 설정되지 않았습니다.", BAD_REQUEST),
+    EXPENSES_AMOUNT_INVALID("지출 금액이 유효하지 않습니다.", BAD_REQUEST),
+    EXPENSES_NOT_EXISTS("지출 내역이 존재하지 않습니다.", BAD_REQUEST),
+
     ;
 
     private final String message;
