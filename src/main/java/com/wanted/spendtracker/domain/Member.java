@@ -34,6 +34,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Budget> budgets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Expenses> expenses = new ArrayList<>();
+
     @Builder
     private Member(String accountName, String password, Role role) {
         this.accountName = accountName;
