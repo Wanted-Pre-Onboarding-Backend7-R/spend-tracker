@@ -26,7 +26,7 @@ public class BudgetSetRequest {
         @Max(value = 12, message = "BUDGET_MONTH_INVALID")
         private Integer month;
 
-        @NotNull(message = "BUDGET_CATEGORY_NOT_EXISTS")
+        @NotNull(message = "CATEGORY_NOT_EXISTS")
         private Long categoryId;
 
         @NotNull(message = "BUDGET_AMOUNT_EMPTY")
