@@ -37,6 +37,8 @@ public enum ErrorCode {
 
     CATEGORY_NOT_EXISTS("카테고리가 존재하지 않습니다.", BAD_REQUEST),
 
+    AMOUNT_UNIT_INVALID("금액을 100원 단위로 입력해주세요.", BAD_REQUEST),
+
     BUDGET_MONTH_EMPTY("예산 월이 존재하지 않습니다.", BAD_REQUEST),
     BUDGET_MONTH_INVALID("예산 월이 유효하지 않습니다.", BAD_REQUEST),
     BUDGET_AMOUNT_EMPTY("예산 금액이 설정되지 않았습니다.", BAD_REQUEST),
