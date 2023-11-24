@@ -61,3 +61,12 @@ configurations {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
 }
+
+// QueryDSL 설정
+def querydslSrcDir = 'src/main/generated'
+clean {
+	delete file(querydslSrcDir)
+}
+tasks.withType(JavaCompile) {
+	options.generatedSourceOutputDirectory = file(querydslSrcDir)
+}
