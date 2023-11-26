@@ -16,7 +16,7 @@ public class BudgetRepositoryImpl implements BudgetRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<CategoryAmountResponse> getCategoriesAverageAmount() {
+    public List<CategoryAmountResponse> getTotalCategoryAmount() {
         return jpaQueryFactory
                 .select(Projections.constructor(CategoryAmountResponse.class,
                         budget.category.id.as("categoryId"),

@@ -8,18 +8,18 @@ import java.util.List;
 @Getter
 public class BudgetRecommendResponse {
 
-    private final Long amount;
+    private final Long totalAmount;
     private final List<CategoryAmountResponse> categoryAmountResponses;
 
     @Builder
-    private BudgetRecommendResponse(Long amount, List<CategoryAmountResponse> categoryAmountResponses) {
-        this.amount = amount;
+    private BudgetRecommendResponse(Long totalAmount, List<CategoryAmountResponse> categoryAmountResponses) {
+        this.totalAmount = totalAmount;
         this.categoryAmountResponses = categoryAmountResponses;
     }
 
-    public static BudgetRecommendResponse of(Long amount, List<CategoryAmountResponse> categoryAmountResponses) {
+    public static BudgetRecommendResponse of(Long totalAmount, List<CategoryAmountResponse> categoryAmountResponses) {
         return BudgetRecommendResponse.builder()
-                .amount(amount)
+                .totalAmount(totalAmount)
                 .categoryAmountResponses(categoryAmountResponses).build();
     }
 
