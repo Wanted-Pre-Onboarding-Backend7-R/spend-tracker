@@ -42,7 +42,7 @@ public class BudgetService {
 
     /**
      * 예산 추천 기능
-     * @param budgetRecommendRequest 사용자가 설정한 예산 금액
+     * @param budgetRecommendRequest 사용자가 설정한 예산 금액을 담은 dto
      * @return 카테고리 별 추천 예산 금액과 총 추천 예산 금액
      */
     public BudgetRecommendResponse recommendBudget(BudgetRecommendRequest budgetRecommendRequest) {
