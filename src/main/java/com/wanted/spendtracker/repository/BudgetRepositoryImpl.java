@@ -20,7 +20,7 @@ public class BudgetRepositoryImpl implements BudgetRepositoryCustom{
         return jpaQueryFactory
                 .select(Projections.constructor(CategoryAmountResponse.class,
                         budget.category.id.as("categoryId"),
-                        budget.amount.avg().as("amount")))
+                        budget.amount.sum().as("amount")))
                 .from(budget)
                 .groupBy(budget.category.id)
                 .fetch();
