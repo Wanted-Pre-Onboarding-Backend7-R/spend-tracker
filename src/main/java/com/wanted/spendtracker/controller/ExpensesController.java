@@ -4,7 +4,7 @@ import com.wanted.spendtracker.domain.Member;
 import com.wanted.spendtracker.domain.MemberAdapter;
 import com.wanted.spendtracker.dto.request.ExpensesCreateRequest;
 import com.wanted.spendtracker.dto.request.ExpensesUpdateRequest;
-import com.wanted.spendtracker.dto.response.ExpensesResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetResponse;
 import com.wanted.spendtracker.service.ExpensesService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +38,10 @@ public class ExpensesController {
     }
 
     @GetMapping ("/api/expenses/{expensesId}")
-    public ResponseEntity<ExpensesResponse> getExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
-                                                        @PathVariable Long expensesId) {
+    public ResponseEntity<ExpensesGetResponse> getExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                                                           @PathVariable Long expensesId) {
         Member member = memberAdapter.getMember();
-        ExpensesResponse expensesResponse = expensesService.getExpenses(member, expensesId);
+        ExpensesGetResponse expensesResponse = expensesService.getExpenses(member, expensesId);
         return ResponseEntity.ok().body(expensesResponse);
     }
 

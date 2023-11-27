@@ -5,7 +5,7 @@ import com.wanted.spendtracker.domain.Expenses;
 import com.wanted.spendtracker.domain.Member;
 import com.wanted.spendtracker.dto.request.ExpensesCreateRequest;
 import com.wanted.spendtracker.dto.request.ExpensesUpdateRequest;
-import com.wanted.spendtracker.dto.response.ExpensesResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetResponse;
 import com.wanted.spendtracker.exception.CustomException;
 import com.wanted.spendtracker.exception.ErrorCode;
 import com.wanted.spendtracker.repository.CategoryRepository;
@@ -42,10 +42,10 @@ public class ExpensesService {
     }
 
     @Transactional(readOnly = true)
-    public ExpensesResponse getExpenses(Member member, Long expensesId) {
+    public ExpensesGetResponse getExpenses(Member member, Long expensesId) {
         Expenses expenses = checkExpenses(expensesId);
         checkMember(member, expenses);
-        return ExpensesResponse.from(expenses);
+        return ExpensesGetResponse.from(expenses);
     }
 
     @Transactional
