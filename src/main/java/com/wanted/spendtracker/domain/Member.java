@@ -31,10 +31,10 @@ public class Member {
     @Column(nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Budget> budgets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Expenses> expenses = new ArrayList<>();
 
     @Builder

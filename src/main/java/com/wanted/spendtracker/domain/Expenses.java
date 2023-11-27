@@ -33,11 +33,11 @@ public class Expenses extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean excludeFromTotalAmount = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
