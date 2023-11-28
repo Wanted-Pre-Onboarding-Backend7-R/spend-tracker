@@ -15,6 +15,12 @@ public class CategoryAmountResponse {
         this.amount = amount;
     }
 
+    public static CategoryAmountResponse of(Long categoryId, Long amount) {
+        return CategoryAmountResponse.builder()
+                .categoryId(categoryId)
+                .amount(amount).build();
+    }
+
     public CategoryAmountResponse(Long categoryId, double amount) {
         this.categoryId = categoryId;
         this.amount = (long) amount;

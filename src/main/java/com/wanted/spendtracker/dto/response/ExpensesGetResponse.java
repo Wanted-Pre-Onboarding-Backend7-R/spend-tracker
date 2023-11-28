@@ -9,8 +9,6 @@ import java.time.LocalDate;
 @Getter
 public class ExpensesGetResponse {
 
-    private final Long memberId;
-
     private final Long categoryId;
 
     private final LocalDate date;
@@ -22,8 +20,7 @@ public class ExpensesGetResponse {
     private final Boolean excludeFromTotalAmount;
 
     @Builder
-    private ExpensesGetResponse(Long memberId, Long categoryId, LocalDate date, Long amount, String memo, Boolean excludeFromTotalAmount) {
-        this.memberId = memberId;
+    private ExpensesGetResponse(Long categoryId, LocalDate date, Long amount, String memo, Boolean excludeFromTotalAmount) {
         this.categoryId = categoryId;
         this.date = date;
         this.amount = amount;
@@ -33,7 +30,6 @@ public class ExpensesGetResponse {
 
     public static ExpensesGetResponse from(Expenses expenses) {
         return ExpensesGetResponse.builder()
-                .memberId(expenses.getMember().getId())
                 .categoryId(expenses.getCategory().getId())
                 .date(expenses.getDate())
                 .amount(expenses.getAmount())
