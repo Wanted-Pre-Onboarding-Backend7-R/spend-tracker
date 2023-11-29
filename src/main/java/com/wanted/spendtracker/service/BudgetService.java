@@ -37,7 +37,6 @@ public class BudgetService {
             Budget budget = Budget.of(budgetRequest.getAmount(), budgetRequest.getMonth(), member, category);
             budgetRepository.save(budget);
         }
-
     }
 
     /**
@@ -54,7 +53,7 @@ public class BudgetService {
         for(CategoryAmountResponse totalCategoryAmount : totalCategoryAmounts) {
             CategoryAmountResponse categoryAmount = CategoryAmountResponse.builder()
                     .categoryId(totalCategoryAmount.getCategoryId())
-                    .amount(recommend(totalCategoryAmount, totalBudgetAmount, amount)).build();
+                    .amount(calculateCategoryAmount(totalCategoryAmount.getAmount(), totalBudgetAmount, amount)).build();
             recommendedCategoryAmounts.add(categoryAmount);
             totalRecommendedBudget += categoryAmount.getAmount();
         }
@@ -63,13 +62,13 @@ public class BudgetService {
 
     /**
      * 각 카테고리 별 예산 금액을 추천하기 위한 계산 로직
-     * @param totalCategoryAmount 카데고리 별 총 예산과 카데고리Id 를 담은 dto
+     * @param totalCategoryAmount 카데고리 별 총 예산
      * @param amount 사용자가 설정한 총 예산 금액
      * @param totalBudgetAmount DB의 총 예산 금액
      * @return 해당 카테고리 추천 예산 금액 (백의 자리에서 반올림)
      */
-    public Long recommend(CategoryAmountResponse totalCategoryAmount, Long totalBudgetAmount, Long amount) {
-        return round(((totalCategoryAmount.getAmount() / (double)totalBudgetAmount) * amount) / 1000.0) * 1000;
+    public Long calculateCategoryAmount(Long totalCategoryAmount, Long totalBudgetAmount, Long amount) {
+        return round(((totalCategoryAmount / (double)totalBudgetAmount) * amount) / 1000.0) * 1000;
     }
 
 }
