@@ -3,11 +3,15 @@ package com.wanted.spendtracker.controller;
 import com.wanted.spendtracker.domain.Member;
 import com.wanted.spendtracker.domain.MemberAdapter;
 import com.wanted.spendtracker.dto.request.ExpensesCreateRequest;
+import com.wanted.spendtracker.dto.request.ExpensesGetListRequest;
 import com.wanted.spendtracker.dto.request.ExpensesUpdateRequest;
-import com.wanted.spendtracker.dto.response.ExpensesResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetListResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetResponse;
 import com.wanted.spendtracker.service.ExpensesService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,24 +34,33 @@ public class ExpensesController {
 
     @PatchMapping ("/api/expenses/{expensesId}")
     public ResponseEntity<Void> updateExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
-                                                           @PathVariable Long expensesId,
-                                                           @Valid @RequestBody ExpensesUpdateRequest expensesUpdateRequest) {
+                                               @PathVariable Long expensesId,
+                                               @Valid @RequestBody ExpensesUpdateRequest expensesUpdateRequest) {
         Member member = memberAdapter.getMember();
         expensesService.updateExpenses(member, expensesId, expensesUpdateRequest);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping ("/api/expenses/{expensesId}")
-    public ResponseEntity<ExpensesResponse> getExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
-                                                        @PathVariable Long expensesId) {
+    public ResponseEntity<ExpensesGetResponse> getExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                                                           @PathVariable Long expensesId) {
         Member member = memberAdapter.getMember();
-        ExpensesResponse expensesResponse = expensesService.getExpenses(member, expensesId);
+        ExpensesGetResponse expensesResponse = expensesService.getExpenses(member, expensesId);
         return ResponseEntity.ok().body(expensesResponse);
+    }
+
+    @GetMapping ("/api/expenses")
+    public ResponseEntity<ExpensesGetListResponse> getExpensesList(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                                                                   @Valid @RequestBody ExpensesGetListRequest expensesGetRequest,
+                                                                   @PageableDefault Pageable pageable) {
+        Member member = memberAdapter.getMember();
+        ExpensesGetListResponse expensesList = expensesService.getExpensesList(member, expensesGetRequest, pageable);
+        return ResponseEntity.ok().body(expensesList);
     }
 
     @DeleteMapping ("/api/expenses/{expensesId}")
     public ResponseEntity<Void> deleteExpenses(@AuthenticationPrincipal MemberAdapter memberAdapter,
-                                                        @PathVariable Long expensesId) {
+                                               @PathVariable Long expensesId) {
         Member member = memberAdapter.getMember();
         expensesService.deleteExpenses(member, expensesId);
         return ResponseEntity.ok().build();

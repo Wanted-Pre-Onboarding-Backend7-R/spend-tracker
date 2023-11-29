@@ -4,16 +4,22 @@ import com.wanted.spendtracker.domain.Category;
 import com.wanted.spendtracker.domain.Expenses;
 import com.wanted.spendtracker.domain.Member;
 import com.wanted.spendtracker.dto.request.ExpensesCreateRequest;
+import com.wanted.spendtracker.dto.request.ExpensesGetListRequest;
 import com.wanted.spendtracker.dto.request.ExpensesUpdateRequest;
-import com.wanted.spendtracker.dto.response.ExpensesResponse;
+import com.wanted.spendtracker.dto.response.CategoryAmountResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetListResponse;
+import com.wanted.spendtracker.dto.response.ExpensesGetResponse;
 import com.wanted.spendtracker.exception.CustomException;
 import com.wanted.spendtracker.exception.ErrorCode;
 import com.wanted.spendtracker.repository.CategoryRepository;
 import com.wanted.spendtracker.repository.ExpensesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.wanted.spendtracker.exception.ErrorCode.CATEGORY_NOT_EXISTS;
@@ -42,10 +48,20 @@ public class ExpensesService {
     }
 
     @Transactional(readOnly = true)
-    public ExpensesResponse getExpenses(Member member, Long expensesId) {
+    public ExpensesGetResponse getExpenses(Member member, Long expensesId) {
         Expenses expenses = checkExpenses(expensesId);
         checkMember(member, expenses);
-        return ExpensesResponse.from(expenses);
+        return ExpensesGetResponse.from(expenses);
+    }
+
+    @Transactional(readOnly = true)
+    public ExpensesGetListResponse getExpensesList(Member member, ExpensesGetListRequest expensesGetRequest, Pageable pageable) {
+        Page<Expenses> expenses  = expensesRepository.findAllByExpensesGetRequest(member, expensesGetRequest, pageable);
+        List<Expenses> expensesList = expenses.getContent();
+        List<ExpensesGetResponse> expensesGetResponseList = expensesListToResponseList(expensesList);
+        Long totalExpensesAmount = getTotalExpensesAmount(expensesList);
+        List<CategoryAmountResponse> totalCategoryAmountList = expensesRepository.findTotalCategoryAmount(member, expensesGetRequest);
+        return ExpensesGetListResponse.of(expensesGetResponseList, totalExpensesAmount, totalCategoryAmountList, expenses);
     }
 
     @Transactional
@@ -53,6 +69,19 @@ public class ExpensesService {
         Expenses expenses = checkExpenses(expensesId);
         checkMember(member, expenses);
         expensesRepository.deleteById(expenses.getId());
+    }
+
+    private Long getTotalExpensesAmount(List<Expenses> expensesList) {
+        return expensesList.stream()
+                .filter(expenses -> !expenses.getExcludeFromTotalAmount())
+                .mapToLong(Expenses::getAmount)
+                .sum();
+    }
+
+    private List<ExpensesGetResponse> expensesListToResponseList(List<Expenses> expensesList) {
+        return expensesList.stream()
+                .map(ExpensesGetResponse::from)
+                .toList();
     }
 
     public Category checkCategory(Long categoryId) {

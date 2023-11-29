@@ -1,7 +1,7 @@
 package com.wanted.spendtracker.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class ExpensesUpdateRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate date;
 
-    @Min(value = 0, message = "EXPENSES_AMOUNT_INVALID")
+    @PositiveOrZero(message = "EXPENSES_AMOUNT_INVALID")
     private Long amount;
 
     private String memo;

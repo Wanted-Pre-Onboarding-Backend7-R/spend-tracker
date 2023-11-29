@@ -7,9 +7,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class ExpensesResponse {
-
-    private final Long memberId;
+public class ExpensesGetResponse {
 
     private final Long categoryId;
 
@@ -22,8 +20,7 @@ public class ExpensesResponse {
     private final Boolean excludeFromTotalAmount;
 
     @Builder
-    private ExpensesResponse(Long memberId, Long categoryId, LocalDate date, Long amount, String memo, Boolean excludeFromTotalAmount) {
-        this.memberId = memberId;
+    private ExpensesGetResponse(Long categoryId, LocalDate date, Long amount, String memo, Boolean excludeFromTotalAmount) {
         this.categoryId = categoryId;
         this.date = date;
         this.amount = amount;
@@ -31,9 +28,8 @@ public class ExpensesResponse {
         this.excludeFromTotalAmount = excludeFromTotalAmount;
     }
 
-    public static ExpensesResponse from(Expenses expenses) {
-        return ExpensesResponse.builder()
-                .memberId(expenses.getMember().getId())
+    public static ExpensesGetResponse from(Expenses expenses) {
+        return ExpensesGetResponse.builder()
                 .categoryId(expenses.getCategory().getId())
                 .date(expenses.getDate())
                 .amount(expenses.getAmount())
