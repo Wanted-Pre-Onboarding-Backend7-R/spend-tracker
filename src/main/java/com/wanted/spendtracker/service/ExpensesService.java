@@ -60,7 +60,7 @@ public class ExpensesService {
         List<Expenses> expensesList = expenses.getContent();
         List<ExpensesGetResponse> expensesGetResponseList = expensesListToResponseList(expensesList);
         Long totalExpensesAmount = getTotalExpensesAmount(expensesList);
-        List<CategoryAmountResponse> totalCategoryAmountList = expensesRepository.findTotalCategoryAmount(member, expensesGetRequest);
+        List<CategoryAmountResponse> totalCategoryAmountList = expensesRepository.findTotalCategoryAmountByRequest(member, expensesGetRequest);
         return ExpensesGetListResponse.of(expensesGetResponseList, totalExpensesAmount, totalCategoryAmountList, expenses);
     }
 

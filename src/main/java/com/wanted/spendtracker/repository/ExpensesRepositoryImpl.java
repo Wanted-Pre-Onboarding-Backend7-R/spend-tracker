@@ -57,7 +57,7 @@ public class ExpensesRepositoryImpl implements ExpensesRepositoryCustom {
     }
 
     @Override
-    public List<CategoryAmountResponse> findTotalCategoryAmount(Member member, ExpensesGetListRequest expensesGetRequest) {
+    public List<CategoryAmountResponse> findTotalCategoryAmountByRequest(Member member, ExpensesGetListRequest expensesGetRequest) {
         return jpaQueryFactory
                 .select(Projections.constructor(CategoryAmountResponse.class,
                         expenses.category.id.as("category_id"),
@@ -75,6 +75,21 @@ public class ExpensesRepositoryImpl implements ExpensesRepositoryCustom {
                 )
                 .groupBy(expenses.category.id)
                 .fetch();
+    }
+
+    @Override
+    public Long getTotalExpensesAmountUntilToday(Member member, LocalDate currentDate) {
+        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+        return jpaQueryFactory
+                .select(expenses.amount.sum())
+                .from(expenses)
+                .where(
+                        memberEq(member.getId()),
+                        startDateAfter(firstDayOfMonth),
+                        endDateBefore(currentDate),
+                        isExcluded(expenses.excludeFromTotalAmount)
+                )
+                .fetchOne();
     }
 
     private BooleanExpression isExcluded(BooleanPath excludeFromTotalAmount) {

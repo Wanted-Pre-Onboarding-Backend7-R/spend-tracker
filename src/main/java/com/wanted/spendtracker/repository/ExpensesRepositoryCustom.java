@@ -7,10 +7,12 @@ import com.wanted.spendtracker.dto.response.CategoryAmountResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ExpensesRepositoryCustom {
     Page<Expenses> findAllByExpensesGetRequest(Member member, ExpensesGetListRequest expensesGetRequest, Pageable pageable);
-    List<CategoryAmountResponse> findTotalCategoryAmount(Member member, ExpensesGetListRequest expensesGetRequest);
+    List<CategoryAmountResponse> findTotalCategoryAmountByRequest(Member member, ExpensesGetListRequest expensesGetRequest);
+    Long getTotalExpensesAmountUntilToday(Member member, LocalDate currentDate);
 
 }
