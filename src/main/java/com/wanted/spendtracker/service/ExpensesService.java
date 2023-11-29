@@ -54,10 +54,11 @@ public class ExpensesService {
         return ExpensesGetResponse.from(expenses);
     }
 
+    @Transactional(readOnly = true)
     public ExpensesGetListResponse getExpensesList(Member member, ExpensesGetListRequest expensesGetRequest, Pageable pageable) {
         Page<Expenses> expenses  = expensesRepository.findAllByExpensesGetRequest(member, expensesGetRequest, pageable);
         List<Expenses> expensesList = expenses.getContent();
-        List<ExpensesGetResponse> expensesGetResponseList = expensesToResponseList(expensesList);
+        List<ExpensesGetResponse> expensesGetResponseList = expensesListToResponseList(expensesList);
         Long totalExpensesAmount = getTotalExpensesAmount(expensesList);
         List<CategoryAmountResponse> totalCategoryAmountList = expensesRepository.findTotalCategoryAmount(member, expensesGetRequest);
         return ExpensesGetListResponse.of(expensesGetResponseList, totalExpensesAmount, totalCategoryAmountList, expenses);
@@ -77,7 +78,7 @@ public class ExpensesService {
                 .sum();
     }
 
-    private List<ExpensesGetResponse> expensesToResponseList(List<Expenses> expensesList) {
+    private List<ExpensesGetResponse> expensesListToResponseList(List<Expenses> expensesList) {
         return expensesList.stream()
                 .map(ExpensesGetResponse::from)
                 .toList();
