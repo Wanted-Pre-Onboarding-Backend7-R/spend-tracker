@@ -23,7 +23,6 @@ public class CategoryService {
             categoryGetResponses.add(categoryGetResponse);
         }
         return categoryGetResponses;
-
     }
 
 }

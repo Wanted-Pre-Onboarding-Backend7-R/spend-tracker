@@ -54,7 +54,6 @@ public class ExpensesRepositoryImpl implements ExpensesRepositoryCustom {
                 );
 
         return PageableExecutionUtils.getPage(expensesList, pageable, countQuery::fetchOne);
-
     }
 
     @Override

@@ -11,7 +11,7 @@ import static com.wanted.spendtracker.domain.QBudget.budget;
 
 
 @RequiredArgsConstructor
-public class BudgetRepositoryImpl implements BudgetRepositoryCustom{
+public class BudgetRepositoryImpl implements BudgetRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 

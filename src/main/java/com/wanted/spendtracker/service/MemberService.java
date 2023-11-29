@@ -26,7 +26,6 @@ public class MemberService {
         } catch (DataIntegrityViolationException e) {
             throw new CustomException(ErrorCode.MEMBER_ACCOUNT_NAME_DUPLICATED, e);
         }
-
     }
 
     public Member createMember(MemberSignUpRequest memberSignUpRequest) {
