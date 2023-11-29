@@ -36,13 +36,13 @@ public class BudgetRepositoryImpl implements BudgetRepositoryCustom {
                 .from(budget)
                 .where(
                         memberIdEq(memberId),
-                        monthEd(month)
+                        monthEq(month)
                 )
                 .groupBy(budget.category.id)
                 .fetch();
     }
 
-    private BooleanExpression monthEd(Integer month) {
+    private BooleanExpression monthEq(Integer month) {
         return month != null ? budget.month.eq(month) : null;
     }
 
