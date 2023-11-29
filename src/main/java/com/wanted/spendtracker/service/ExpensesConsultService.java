@@ -103,10 +103,10 @@ public class ExpensesConsultService {
      * @param totalCategoryBudgetOfThisMonth 카테고리 별 예산 총액
      * @param totalBudgetOfThisMonth 이번 달 총 예산 금액
      * @param totalAvailableExpenses 오늘 지출 가능한 총액
-     * @return 각 카테고리 별 추천 금액 (백의 자리 반올림)
+     * @return 각 카테고리 별 추천 금액 (십의 자리 반올림)
      */
     private Long calculateCategoryAmount(Long totalCategoryBudgetOfThisMonth, Long totalBudgetOfThisMonth, Long totalAvailableExpenses) {
-        return round(((totalCategoryBudgetOfThisMonth / (double)totalBudgetOfThisMonth) * totalAvailableExpenses) / 1000.0) * 1000;
+        return round(((totalCategoryBudgetOfThisMonth / (double)totalBudgetOfThisMonth) * totalAvailableExpenses) / 100.0) * 100;
     }
 
 }
