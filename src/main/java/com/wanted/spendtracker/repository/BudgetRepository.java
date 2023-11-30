@@ -8,4 +8,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long>, BudgetRep
     @Query("SELECT sum(b.amount) FROM Budget b")
     Long getTotalBudgetAmount();
 
+    @Query("SELECT sum(b.amount) FROM Budget b where b.member.id = :memberId and b.month = :month")
+    Long getTotalBudgetAmountByMonth(Long memberId, Integer month);
+
 }
