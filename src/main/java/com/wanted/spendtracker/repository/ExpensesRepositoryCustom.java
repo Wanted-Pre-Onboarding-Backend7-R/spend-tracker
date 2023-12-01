@@ -14,5 +14,6 @@ public interface ExpensesRepositoryCustom {
     Page<Expenses> findAllByExpensesGetRequest(Member member, ExpensesGetListRequest expensesGetRequest, Pageable pageable);
     List<CategoryAmountResponse> findTotalCategoryAmountByRequest(Member member, ExpensesGetListRequest expensesGetRequest);
     Long getTotalExpensesAmountUntilToday(Member member, LocalDate currentDate);
+    List<CategoryAmountResponse> getTodayTotalCategoryExpenses(Member member, LocalDate currentDate);
 
 }

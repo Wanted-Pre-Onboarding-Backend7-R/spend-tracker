@@ -9,18 +9,18 @@ import java.util.List;
 public class ExpensesRecommendResponse {
 
     private final Long totalAvailableExpenses;
-    private final List<CategoryAmountResponse> AvailableExpensesByCategory;
+    private final List<CategoryAmountResponse> availableExpensesByCategoryList;
 
     @Builder
-    private ExpensesRecommendResponse(Long totalAvailableExpenses, List<CategoryAmountResponse> availableExpensesByCategory) {
+    private ExpensesRecommendResponse(Long totalAvailableExpenses, List<CategoryAmountResponse> availableExpensesByCategoryList) {
         this.totalAvailableExpenses = totalAvailableExpenses;
-        AvailableExpensesByCategory = availableExpensesByCategory;
+        this.availableExpensesByCategoryList = availableExpensesByCategoryList;
     }
 
-    public static ExpensesRecommendResponse of(Long totalAvailableExpenses, List<CategoryAmountResponse> availableExpensesByCategory) {
+    public static ExpensesRecommendResponse of(Long totalAvailableExpenses, List<CategoryAmountResponse> availableExpensesByCategoryList) {
         return ExpensesRecommendResponse.builder()
                 .totalAvailableExpenses(totalAvailableExpenses)
-                .availableExpensesByCategory(availableExpensesByCategory).build();
+                .availableExpensesByCategoryList(availableExpensesByCategoryList).build();
     }
 
 }

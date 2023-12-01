@@ -61,7 +61,7 @@ public class ExpensesRepositoryImpl implements ExpensesRepositoryCustom {
         return jpaQueryFactory
                 .select(Projections.constructor(CategoryAmountResponse.class,
                         expenses.category.id.as("category_id"),
-                        expenses.amount.sum().as(("amount")))
+                        expenses.amount.sum().as("amount"))
                 )
                 .from(expenses)
                 .where(
@@ -90,6 +90,26 @@ public class ExpensesRepositoryImpl implements ExpensesRepositoryCustom {
                         isExcluded(expenses.excludeFromTotalAmount)
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<CategoryAmountResponse> getTodayTotalCategoryExpenses(Member member, LocalDate currentDate) {
+        return jpaQueryFactory
+                .select(Projections.constructor(CategoryAmountResponse.class,
+                        expenses.category.id.as("category_id"),
+                        expenses.amount.sum().as("amount"))
+                )
+                .from(expenses)
+                .where(
+                        memberEq(member.getId()),
+                        currentDateEq(currentDate)
+                )
+                .groupBy(expenses.category.id)
+                .fetch();
+    }
+
+    private BooleanExpression currentDateEq(LocalDate currentDate) {
+        return currentDate != null ? expenses.date.eq(currentDate) : null;
     }
 
     private BooleanExpression isExcluded(BooleanPath excludeFromTotalAmount) {

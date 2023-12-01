@@ -2,7 +2,10 @@ package com.wanted.spendtracker.service;
 
 import com.wanted.spendtracker.domain.Member;
 import com.wanted.spendtracker.dto.response.CategoryAmountResponse;
+import com.wanted.spendtracker.dto.response.ExpensesRatioResponse;
+import com.wanted.spendtracker.dto.response.ExpensesNotificationResponse;
 import com.wanted.spendtracker.dto.response.ExpensesRecommendResponse;
+import com.wanted.spendtracker.exception.CustomException;
 import com.wanted.spendtracker.repository.BudgetRepository;
 import com.wanted.spendtracker.repository.ExpensesRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wanted.spendtracker.exception.ErrorCode.BUDGET_NOT_EXISTS;
 import static java.lang.Math.round;
 
 @Service
@@ -27,30 +31,33 @@ public class ExpensesConsultService {
 
     /**
      * 오늘의 지출 추천
-     * @param member
+     * @param member 인증된 사용자
      * @return 추천 지출 총액과 카테고리 별 추천 지출 금액
      */
     public ExpensesRecommendResponse recommendExpenses(Member member) {
         LocalDate currentDate = LocalDate.now();
-        long daysLeftOfThisMonth = calculateDaysLeft(currentDate);
-
         Long totalBudgetOfThisMonth = getTotalBudgetOfThisMonth(member, currentDate);
-        Long totalExpensesUntilToday = getExpensesUntilToday(member, currentDate);
-        Long totalAvailableExpenses = calculateTotalAvailableExpenses(totalBudgetOfThisMonth, totalExpensesUntilToday, daysLeftOfThisMonth);
-
-        List<CategoryAmountResponse> totalCategoryBudgetOfThisMonth = getTotalCategoryBudgetOfThisMonth(member, currentDate);
-        List<CategoryAmountResponse> availableExpensesByCategory = getAvailableExpensesByCategory(totalCategoryBudgetOfThisMonth, totalBudgetOfThisMonth, totalAvailableExpenses);
-
-        return ExpensesRecommendResponse.of(totalAvailableExpenses, availableExpensesByCategory);
+        Long totalAvailableExpenses = createTotalAvailableExpenses(member, totalBudgetOfThisMonth, currentDate);
+        List<CategoryAmountResponse> availableExpensesByCategoryList = createAvailableExpensesByCategory(member, currentDate, totalBudgetOfThisMonth, totalAvailableExpenses);
+        return ExpensesRecommendResponse.of(totalAvailableExpenses, availableExpensesByCategoryList);
     }
 
-    private long calculateDaysLeft(LocalDate currentDate) {
-        LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
-        return  ChronoUnit.DAYS.between(currentDate, lastDayOfMonth) + 1;
+    /**
+     * 오늘의 지출 안내
+     * @param member 인증된 사용자
+     * @return 오늘 쓴 지출 총액, 카테고리 별 지출 총액 및 오늘 지출 가능한 금액 대비 실제 쓴 지출의 비율
+     */
+    public ExpensesNotificationResponse notifyExpenses(Member member) {
+        LocalDate currentDate = LocalDate.now();
+        Long todayTotalExpenses = expensesRepository.getTodayTotalExpenses(member.getId(), currentDate);
+        List<CategoryAmountResponse> todayTotalCategoryExpensesList = expensesRepository.getTodayTotalCategoryExpenses(member, currentDate);
+        ExpensesRatioResponse expensesRatioResponse = createExpensesRatioResponse(member, currentDate, todayTotalExpenses);
+        return ExpensesNotificationResponse.of(todayTotalExpenses, todayTotalCategoryExpensesList, expensesRatioResponse);
     }
 
     private Long getTotalBudgetOfThisMonth (Member member, LocalDate currentDate) {
-        return budgetRepository.getTotalBudgetAmountByMonth(member.getId(), currentDate.getMonthValue());
+        return budgetRepository.getTotalBudgetAmountByMonth(member.getId(), currentDate.getMonthValue())
+                .orElseThrow(() -> new CustomException(BUDGET_NOT_EXISTS));
     }
 
     private Long getExpensesUntilToday (Member member, LocalDate currentDate) {
@@ -61,16 +68,23 @@ public class ExpensesConsultService {
         return budgetRepository.getTotalCategoryAmountByMonth(member.getId(), currentDate.getMonthValue());
     }
 
+    private Long createTotalAvailableExpenses(Member member, Long totalBudgetOfThisMonth, LocalDate currentDate) {
+        long daysLeftOfThisMonth = calculateDaysLeft(currentDate);
+        Long totalExpensesUntilToday = getExpensesUntilToday(member, currentDate);
+        return calculateTotalAvailableExpenses(totalBudgetOfThisMonth, totalExpensesUntilToday, daysLeftOfThisMonth);
+    }
+
     /**
      * 카테고리 별 추천 지출 금액을 반환하는 메소드
-     * @param totalCategoryBudgetOfThisMonth 카데고리 별 총 예산 금액을 담은 리스트
      * @param totalBudgetOfThisMonth 이번 달 총 예산 금액
      * @param totalAvailableExpenses 이번 달 사용 가능한 지출 금액
      * @return 카테고리 별 추천 지출 금액
      */
-    private List<CategoryAmountResponse> getAvailableExpensesByCategory(List<CategoryAmountResponse> totalCategoryBudgetOfThisMonth,
-                                                                        Long totalBudgetOfThisMonth,
-                                                                        Long totalAvailableExpenses) {
+    private List<CategoryAmountResponse> createAvailableExpensesByCategory(Member member,
+                                                                           LocalDate currentDate,
+                                                                           Long totalBudgetOfThisMonth,
+                                                                           Long totalAvailableExpenses) {
+        List<CategoryAmountResponse> totalCategoryBudgetOfThisMonth = getTotalCategoryBudgetOfThisMonth(member, currentDate);
         List<CategoryAmountResponse> availableExpensesByCategory = new ArrayList<>();
         for(CategoryAmountResponse CategoryBudgetOfThisMonth : totalCategoryBudgetOfThisMonth) {
             CategoryAmountResponse categoryAmount = CategoryAmountResponse.builder()
@@ -79,6 +93,18 @@ public class ExpensesConsultService {
             availableExpensesByCategory.add(categoryAmount);
         }
         return availableExpensesByCategory;
+    }
+
+    private ExpensesRatioResponse createExpensesRatioResponse(Member member, LocalDate currentDate, Long todayTotalExpenses) {
+        Long totalBudgetOfThisMonth = getTotalBudgetOfThisMonth(member, currentDate);
+        Long totalAvailableExpenses = createTotalAvailableExpenses(member, totalBudgetOfThisMonth, currentDate);
+        Double RatioOfExpenses = calculateRatioOfExpenses(totalAvailableExpenses, todayTotalExpenses);
+        return ExpensesRatioResponse.of(totalAvailableExpenses, todayTotalExpenses, RatioOfExpenses);
+    }
+
+    private long calculateDaysLeft(LocalDate currentDate) {
+        LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
+        return  ChronoUnit.DAYS.between(currentDate, lastDayOfMonth) + 1;
     }
 
     /**
@@ -107,6 +133,16 @@ public class ExpensesConsultService {
      */
     private Long calculateCategoryAmount(Long totalCategoryBudgetOfThisMonth, Long totalBudgetOfThisMonth, Long totalAvailableExpenses) {
         return round(((totalCategoryBudgetOfThisMonth / (double)totalBudgetOfThisMonth) * totalAvailableExpenses) / 100.0) * 100;
+    }
+
+    /**
+     *  오늘 지출 가능한 금액 대비 실제 쓴 지출의 비율을 계산하는 메소드
+     * @param availableExpenses 오늘 지출 가능한 금액
+     * @param todayExpenses 실제 쓴 지출
+     * @return 오늘 지출 가능한 금액 대비 실제 쓴 지출의 비율 (소수점 첫 째 자리 반올림)
+     */
+    private Double calculateRatioOfExpenses(Long availableExpenses, Long todayExpenses) {
+        return (double) round((todayExpenses * 100) / (double) availableExpenses);
     }
 
 }

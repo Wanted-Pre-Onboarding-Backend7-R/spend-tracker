@@ -44,6 +44,7 @@ public enum ErrorCode {
     BUDGET_AMOUNT_EMPTY("예산 금액이 설정되지 않았습니다.", BAD_REQUEST),
     BUDGET_AMOUNT_INVALID("예산 금액이 유효하지 않습니다.", BAD_REQUEST),
     BUDGET_REQUEST_EMPTY("예산 금액 요청이 존재하지 않습니다.", BAD_REQUEST),
+    BUDGET_NOT_EXISTS("예산을 먼저 설정해주세요.", BAD_REQUEST),
 
     EXPENSES_DATE_EMPTY("지출 날짜가 존재하지 않습니다.", BAD_REQUEST),
     EXPENSES_EXCLUDE_FROM_TOTAL_AMOUNT_EMPTY("지출 함계 여부가 설정되지 않았습니다", BAD_REQUEST),
