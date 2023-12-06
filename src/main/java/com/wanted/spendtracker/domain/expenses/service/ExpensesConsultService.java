@@ -61,7 +61,9 @@ public class ExpensesConsultService {
     }
 
     private Long getExpensesUntilToday (Member member, LocalDate currentDate) {
-        return expensesRepository.getTotalExpensesAmountUntilToday(member, currentDate);
+        if(expensesRepository.getTotalExpensesAmountUntilToday(member, currentDate) == null) {
+            return 0L;
+        } else return expensesRepository.getTotalExpensesAmountUntilToday(member, currentDate);
     }
 
     private Long getTodayTotalExpenses(Member member, LocalDate currentDate) {
