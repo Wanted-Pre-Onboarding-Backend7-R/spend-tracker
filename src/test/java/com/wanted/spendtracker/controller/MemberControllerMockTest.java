@@ -2,9 +2,10 @@ package com.wanted.spendtracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.spendtracker.config.SecurityConfig;
-import com.wanted.spendtracker.dto.request.MemberSignUpRequest;
+import com.wanted.spendtracker.member.dto.MemberSignUpRequest;
 import com.wanted.spendtracker.exception.ErrorCode;
-import com.wanted.spendtracker.service.MemberService;
+import com.wanted.spendtracker.member.controller.MemberController;
+import com.wanted.spendtracker.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

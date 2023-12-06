@@ -1,6 +1,5 @@
 package com.wanted.spendtracker.exception;
 
-import com.wanted.spendtracker.dto.response.CustomErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,10 +1,10 @@
 package com.wanted.spendtracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.spendtracker.domain.Member;
-import com.wanted.spendtracker.dto.request.MemberSignUpRequest;
-import com.wanted.spendtracker.dto.request.TokenCreateRequest;
-import com.wanted.spendtracker.repository.MemberRepository;
+import com.wanted.spendtracker.member.domain.Member;
+import com.wanted.spendtracker.member.dto.MemberSignUpRequest;
+import com.wanted.spendtracker.auth.dto.TokenCreateRequest;
+import com.wanted.spendtracker.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

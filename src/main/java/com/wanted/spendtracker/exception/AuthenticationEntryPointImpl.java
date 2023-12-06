@@ -1,7 +1,6 @@
 package com.wanted.spendtracker.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.spendtracker.dto.response.CustomErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

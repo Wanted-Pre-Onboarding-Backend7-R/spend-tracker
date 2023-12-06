@@ -1,6 +1,6 @@
 package com.wanted.spendtracker.controller;
 
-import com.wanted.spendtracker.repository.CategoryRepository;
+import com.wanted.spendtracker.category.repository.CategoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

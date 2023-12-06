@@ -1,6 +1,6 @@
 package com.wanted.spendtracker.config;
 
-import com.wanted.spendtracker.infrastructure.JwtAuthenticationFilter;
+import com.wanted.spendtracker.auth.infrastructure.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
