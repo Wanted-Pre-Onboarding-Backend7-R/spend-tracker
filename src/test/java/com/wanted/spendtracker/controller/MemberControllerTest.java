@@ -1,10 +1,10 @@
 package com.wanted.spendtracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.spendtracker.member.domain.Member;
-import com.wanted.spendtracker.member.dto.MemberSignUpRequest;
-import com.wanted.spendtracker.exception.ErrorCode;
-import com.wanted.spendtracker.member.repository.MemberRepository;
+import com.wanted.spendtracker.domain.member.domain.Member;
+import com.wanted.spendtracker.domain.member.dto.MemberSignUpRequest;
+import com.wanted.spendtracker.global.exception.ErrorCode;
+import com.wanted.spendtracker.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +32,13 @@ class MemberControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @Autowired(required = false)
     private ObjectMapper mapper;
 
-    @Autowired
+    @Autowired(required = false)
     private MemberRepository memberRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private PasswordEncoder passwordEncoder;
 
     @DisplayName("성공")

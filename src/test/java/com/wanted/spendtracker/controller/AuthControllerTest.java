@@ -1,10 +1,10 @@
 package com.wanted.spendtracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.spendtracker.member.domain.Member;
-import com.wanted.spendtracker.member.dto.MemberSignUpRequest;
-import com.wanted.spendtracker.auth.dto.TokenCreateRequest;
-import com.wanted.spendtracker.member.repository.MemberRepository;
+import com.wanted.spendtracker.domain.member.domain.Member;
+import com.wanted.spendtracker.domain.member.dto.MemberSignUpRequest;
+import com.wanted.spendtracker.domain.auth.dto.TokenCreateRequest;
+import com.wanted.spendtracker.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.wanted.spendtracker.TestConstants.*;
-import static com.wanted.spendtracker.exception.ErrorCode.*;
+import static com.wanted.spendtracker.global.exception.ErrorCode.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,11 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
+    @Autowired(required = false)
     private ObjectMapper objectMapper;
-    @Autowired
+    @Autowired(required = false)
     private PasswordEncoder passwordEncoder;
-    @Autowired
+    @Autowired(required = false)
     private MemberRepository memberRepository;
 
     @BeforeEach

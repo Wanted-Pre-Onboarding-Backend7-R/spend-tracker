@@ -1,6 +1,6 @@
 package com.wanted.spendtracker.controller;
 
-import com.wanted.spendtracker.category.repository.CategoryRepository;
+import com.wanted.spendtracker.domain.category.repository.CategoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CategoryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
+    @Autowired(required = false)
     private CategoryRepository categoryRepository;
 
     @Test
