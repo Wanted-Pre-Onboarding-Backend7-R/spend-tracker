@@ -49,7 +49,7 @@ public class ExpensesConsultService {
      */
     public ExpensesNotificationResponse notifyExpenses(Member member) {
         LocalDate currentDate = LocalDate.now();
-        Long todayTotalExpenses = expensesRepository.getTodayTotalExpenses(member.getId(), currentDate);
+        Long todayTotalExpenses = getTodayTotalExpenses(member, currentDate);
         List<CategoryAmountResponse> todayTotalCategoryExpensesList = expensesRepository.getTodayTotalCategoryExpenses(member, currentDate);
         ExpensesRatioResponse expensesRatioResponse = createExpensesRatioResponse(member, currentDate, todayTotalExpenses);
         return ExpensesNotificationResponse.of(todayTotalExpenses, todayTotalCategoryExpensesList, expensesRatioResponse);
@@ -62,6 +62,12 @@ public class ExpensesConsultService {
 
     private Long getExpensesUntilToday (Member member, LocalDate currentDate) {
         return expensesRepository.getTotalExpensesAmountUntilToday(member, currentDate);
+    }
+
+    private Long getTodayTotalExpenses(Member member, LocalDate currentDate) {
+        if(expensesRepository.getTotalExpensesByToday(member.getId(), currentDate) == null) {
+            return 0L;
+        } else return expensesRepository.getTotalExpensesByToday(member.getId(), currentDate);
     }
 
     private List<CategoryAmountResponse> getTotalCategoryBudgetOfThisMonth(Member member, LocalDate currentDate) {

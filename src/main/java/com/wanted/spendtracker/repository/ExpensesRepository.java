@@ -9,6 +9,6 @@ import java.time.LocalDate;
 public interface ExpensesRepository extends JpaRepository<Expenses, Long>, ExpensesRepositoryCustom {
 
     @Query("SELECT sum(e.amount) FROM Expenses e where e.member.id = :memberId and e.date = :currentDate")
-    Long getTodayTotalExpenses(Long memberId, LocalDate currentDate);
+    Long getTotalExpensesByToday(Long memberId, LocalDate currentDate);
 
 }
