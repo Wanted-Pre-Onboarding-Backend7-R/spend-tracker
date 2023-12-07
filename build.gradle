@@ -49,6 +49,9 @@ dependencies {
 	// log4j2
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+
+	//Json Object 및 Parser
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 tasks.named('test') {
