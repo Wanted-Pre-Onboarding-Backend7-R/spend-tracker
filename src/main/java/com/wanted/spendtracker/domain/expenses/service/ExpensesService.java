@@ -32,7 +32,12 @@ public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final CategoryRepository categoryRepository;
 
-
+    /**
+     * 지출 생성 기능
+     * @param member 인증된 사용자
+     * @param expensesCreateRequest 생성하려는 지출 내용을 담은 dto
+     * @return 지출 id
+     */
     @Transactional
     public Long createExpenses(Member member, ExpensesCreateRequest expensesCreateRequest) {
         Category category = checkCategory(expensesCreateRequest.getCategoryId());
@@ -40,6 +45,12 @@ public class ExpensesService {
         return expensesRepository.save(expenses).getId();
     }
 
+    /**
+     * 지출 수정 기능
+     * @param member 인증된 사용자
+     * @param expensesId 지출 id
+     * @param expensesUpdateRequest 수정하려는 지출 내용을 담은 dto
+     */
     @Transactional
     public void updateExpenses(Member member, Long expensesId, ExpensesUpdateRequest expensesUpdateRequest) {
         Expenses expenses = checkExpenses(expensesId);
@@ -47,6 +58,12 @@ public class ExpensesService {
         expenses.update(expensesUpdateRequest);
     }
 
+    /**
+     * 지출 상세 조회 기능
+     * @param member 인증된 사용자
+     * @param expensesId 지출 id
+     * @return 지출 상세 내역
+     */
     @Transactional(readOnly = true)
     public ExpensesGetResponse getExpenses(Member member, Long expensesId) {
         Expenses expenses = checkExpenses(expensesId);
@@ -54,6 +71,14 @@ public class ExpensesService {
         return ExpensesGetResponse.from(expenses);
     }
 
+    /**
+     * 지출 목록 조회 기능
+     * 지출 기간, 지출 카테고리, 지출 최소/최대 금액 으로 조회
+     * @param member 인증된 사용자
+     * @param expensesGetRequest 조회하고 싶은 조건을 담은 dto
+     * @param pageable
+     * @return 총 지출 합계, 카테고리 별 지출 합계, 총 조회 내역 건수, 총 페이지 수 내림차순 반환 (합계 제외 내역 불포함)
+     */
     @Transactional(readOnly = true)
     public ExpensesGetListResponse getExpensesList(Member member, ExpensesGetListRequest expensesGetRequest, Pageable pageable) {
         Page<Expenses> expenses  = expensesRepository.findAllByExpensesGetRequest(member, expensesGetRequest, pageable);
@@ -64,6 +89,11 @@ public class ExpensesService {
         return ExpensesGetListResponse.of(expensesGetResponseList, totalExpensesAmount, totalCategoryAmountList, expenses);
     }
 
+    /**
+     * 지출 삭제 기능
+     * @param member 인증된 사용자
+     * @param expensesId 지출 id
+     */
     @Transactional
     public void deleteExpenses(Member member, Long expensesId) {
         Expenses expenses = checkExpenses(expensesId);
@@ -84,17 +114,17 @@ public class ExpensesService {
                 .toList();
     }
 
-    public Category checkCategory(Long categoryId) {
+    private Category checkCategory(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(CATEGORY_NOT_EXISTS));
     }
 
-    public Expenses checkExpenses(Long expensesId) {
+    private Expenses checkExpenses(Long expensesId) {
         return expensesRepository.findById(expensesId)
                 .orElseThrow(() -> new CustomException(EXPENSES_NOT_EXISTS));
     }
 
-    public void checkMember(Member member, Expenses expenses) {
+    private void checkMember(Member member, Expenses expenses) {
         if (!Objects.equals(expenses.getMember().getId(), member.getId())) {
             throw new CustomException(ErrorCode.MEMBER_NOT_SAME);
         }

@@ -34,6 +34,7 @@ public class ExpensesConsultService {
      * @param member 인증된 사용자
      * @return 추천 지출 총액과 카테고리 별 추천 지출 금액
      */
+    @Transactional(readOnly = true)
     public ExpensesRecommendResponse recommendExpenses(Member member) {
         LocalDate currentDate = LocalDate.now();
         Long totalBudgetOfThisMonth = getTotalBudgetOfThisMonth(member, currentDate);
@@ -47,6 +48,7 @@ public class ExpensesConsultService {
      * @param member 인증된 사용자
      * @return 오늘 쓴 지출 총액, 카테고리 별 지출 총액 및 오늘 지출 가능한 금액 대비 실제 쓴 지출의 비율
      */
+    @Transactional(readOnly = true)
     public ExpensesNotificationResponse notifyExpenses(Member member) {
         LocalDate currentDate = LocalDate.now();
         Long todayTotalExpenses = getTodayTotalExpenses(member, currentDate);

@@ -28,7 +28,7 @@ public class MemberService {
         }
     }
 
-    public Member createMember(MemberSignUpRequest memberSignUpRequest) {
+    private Member createMember(MemberSignUpRequest memberSignUpRequest) {
         String encodedPassword = passwordEncoder.encode(memberSignUpRequest.getPassword());
         return Member.of(memberSignUpRequest, encodedPassword);
     }

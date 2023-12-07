@@ -34,6 +34,7 @@ public class AuthService {
         return jwtTokenProvider.generateToken(member);
     }
 
+    @Transactional
     public void logout(MemberAdapter memberAdapter, String accessToken) {
         Long expiration = jwtTokenProvider.getExpiration(accessToken);
         String accountName = memberAdapter.getUsername();

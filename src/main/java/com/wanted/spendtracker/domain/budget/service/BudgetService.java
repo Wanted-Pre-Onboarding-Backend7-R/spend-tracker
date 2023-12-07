@@ -28,12 +28,16 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
     private final CategoryRepository categoryRepository;
 
+    /***
+     * 예산 설정 기능
+     * @param member 인증된 사용자
+     * @param budgetSetRequest 사용자가 설정한 카테고리별 예산 금액
+     */
     @Transactional
     public void setBudget(Member member, BudgetSetRequest budgetSetRequest) {
         List<BudgetRequest> budgetRequests = budgetSetRequest.getBudgetRequestList();
         for (BudgetRequest budgetRequest : budgetRequests) {
-            Category category = categoryRepository.findById(budgetRequest.getCategoryId())
-                    .orElseThrow(() -> new CustomException(CATEGORY_NOT_EXISTS));
+            Category category = checkCategory(budgetRequest.getCategoryId());
             Budget budget = Budget.of(budgetRequest.getAmount(), budgetRequest.getMonth(), member, category);
             budgetRepository.save(budget);
         }
@@ -44,6 +48,7 @@ public class BudgetService {
      * @param budgetRecommendRequest 사용자가 설정한 예산 금액을 담은 dto
      * @return 카테고리 별 추천 예산 금액과 총 추천 예산 금액
      */
+    @Transactional(readOnly = true)
     public BudgetRecommendResponse recommendBudget(BudgetRecommendRequest budgetRecommendRequest) {
         Long amount = budgetRecommendRequest.getAmount();
         Long totalBudgetAmount = budgetRepository.getTotalBudgetAmount();
@@ -60,6 +65,11 @@ public class BudgetService {
         return BudgetRecommendResponse.of(totalRecommendedBudget, recommendedCategoryAmounts);
     }
 
+    private Category checkCategory(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CustomException(CATEGORY_NOT_EXISTS));
+    }
+
     /**
      * 각 카테고리 별 예산 금액을 추천하기 위한 계산 로직
      * @param totalCategoryAmount 카데고리 별 총 예산
@@ -67,7 +77,7 @@ public class BudgetService {
      * @param totalBudgetAmount DB의 총 예산 금액
      * @return 해당 카테고리 추천 예산 금액 (백의 자리에서 반올림)
      */
-    public Long calculateCategoryAmount(Long totalCategoryAmount, Long totalBudgetAmount, Long amount) {
+    private Long calculateCategoryAmount(Long totalCategoryAmount, Long totalBudgetAmount, Long amount) {
         return round(((totalCategoryAmount / (double)totalBudgetAmount) * amount) / 1000.0) * 1000;
     }
 
