@@ -10,6 +10,7 @@
 - [ERD 설계](#erd-설계)
 - [API 설계](#api-설계)
 - [프로젝트 일정관리](#프로젝트-일정관리)
+- [프로젝트 동작예시](#프로젝트-동작예시)
 - [API 구현과정 및 고려사항](#api-구현과정-및-고려사항)
 - [TIL 및 회고](#til-및-회고)
 
@@ -192,6 +193,19 @@ Swagger:
 <br/>
 <br/>
 
+## 프로젝트 동작예시
+- **Discord WebHook** 을 통해 `지출 추천 API` 와 `지출 안내 API` 의 알림 기능 구현 모습
+  - `지출 추천 API`
+    <br/>
+    <img width="500" alt="스크린샷 2023-12-07 오전 1 39 02" src="https://github.com/Wanted-Pre-Onboarding-Backend7-R/spend-tracker/assets/110372498/048869a0-eae6-4715-b371-c9ba059eebe8">
+    <br/>
+    
+  - `지출 안내 API`
+    <br/>
+    <img width="500" alt="스크린샷 2023-12-07 오전 1 39 42" src="https://github.com/Wanted-Pre-Onboarding-Backend7-R/spend-tracker/assets/110372498/a5e846e8-5f8b-409f-a535-0a54a1907ea5">
+
+<br/>
+<br/>
 
 ## API 구현과정 및 고려사항
 
