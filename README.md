@@ -232,7 +232,7 @@ Swagger:
 
 ### 사용자 로그아웃(API)
 
-- 로그아웃시 `redis`에 저장된 `RefreshToken` 을 삭제하고, `key : value = 사용자명 : AccessToken` 형식으로 저장하여 로그아웃 사용자 관리
+- 로그아웃시 `redis`에 저장된 `RefreshToken` 을 삭제하고, `key : value = AccessToken : 'logout'` 형식으로 저장하여 로그아웃 사용자 관리
 - 모든 요청 전의 `jwtAuthenticationFilter` 에서 로그아웃 사용자일 시 접근 불가한 예외처리
 
 <br/>
