@@ -27,7 +27,7 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 public class JwtTokenProvider {
 
     public static final String CLAIMS_AUTH = "auth";
-    public static final String GRANTTYPE_BEARER = "Bearer";
+    public static final String GRANT_TYPE_BEARER = "Bearer";
 
     private final long expirationTimeMillis;
     private final Key key;
@@ -46,7 +46,7 @@ public class JwtTokenProvider {
         final String accessToken = generateAccessToken(member);
         final String refreshToken = generateRefreshToken(member);
         return TokenCreateResponse.builder()
-                .grantType(GRANTTYPE_BEARER)
+                .grantType(GRANT_TYPE_BEARER)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -84,8 +84,8 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(GRANTTYPE_BEARER)) {
-            return bearerToken.substring(GRANTTYPE_BEARER.length() + 1);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(GRANT_TYPE_BEARER)) {
+            return bearerToken.substring(GRANT_TYPE_BEARER.length() + 1);
         }
         return null;
     }

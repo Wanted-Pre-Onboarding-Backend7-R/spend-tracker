@@ -5,6 +5,7 @@ import com.wanted.spendtracker.domain.auth.dto.TokenCreateRequest;
 import com.wanted.spendtracker.domain.auth.dto.TokenCreateResponse;
 import com.wanted.spendtracker.domain.auth.infrastructure.JwtTokenProvider;
 import com.wanted.spendtracker.domain.auth.service.AuthService;
+import com.wanted.spendtracker.global.docs.AuthControllerDocs;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;

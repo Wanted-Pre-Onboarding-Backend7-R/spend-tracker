@@ -24,11 +24,17 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
 
+    //Swagger
+    private final String swaggerPath;
+    private final String apiDocsPath;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers(swaggerPath).permitAll()
+                        .requestMatchers(apiDocsPath).permitAll()
                         .anyRequest().authenticated()
                 )
 
