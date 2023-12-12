@@ -2,6 +2,7 @@ package com.wanted.spendtracker.domain.member.controller;
 
 import com.wanted.spendtracker.domain.member.dto.MemberSignUpRequest;
 import com.wanted.spendtracker.domain.member.service.MemberService;
+import com.wanted.spendtracker.global.docs.MemberControllerDocs;
 import com.wanted.spendtracker.global.validation.PasswordValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberController {
+public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
 

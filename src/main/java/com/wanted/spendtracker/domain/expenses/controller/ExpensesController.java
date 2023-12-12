@@ -8,6 +8,7 @@ import com.wanted.spendtracker.domain.expenses.dto.response.ExpensesGetListRespo
 import com.wanted.spendtracker.domain.expenses.dto.response.ExpensesGetResponse;
 import com.wanted.spendtracker.domain.expenses.service.ExpensesService;
 import com.wanted.spendtracker.domain.member.domain.Member;
+import com.wanted.spendtracker.global.docs.ExpenseControllerDocs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-public class ExpensesController {
+public class ExpensesController implements ExpenseControllerDocs {
 
     private final ExpensesService expensesService;
 

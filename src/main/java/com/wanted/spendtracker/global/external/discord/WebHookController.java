@@ -2,6 +2,7 @@ package com.wanted.spendtracker.global.external.discord;
 
 import com.wanted.spendtracker.domain.auth.domain.MemberAdapter;
 import com.wanted.spendtracker.domain.member.domain.Member;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Discord WebHook")
 public class WebHookController {
 
     private final WebHookService webHookService;

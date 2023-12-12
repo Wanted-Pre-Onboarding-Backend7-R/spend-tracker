@@ -6,6 +6,7 @@ import com.wanted.spendtracker.domain.member.domain.Member;
 import com.wanted.spendtracker.domain.budget.dto.request.BudgetRecommendRequest;
 import com.wanted.spendtracker.domain.budget.dto.request.BudgetSetRequest;
 import com.wanted.spendtracker.domain.budget.dto.response.BudgetRecommendResponse;
+import com.wanted.spendtracker.global.docs.BudgetControllerDocs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class BudgetController {
+public class BudgetController implements BudgetControllerDocs {
 
     private final BudgetService budgetService;
 

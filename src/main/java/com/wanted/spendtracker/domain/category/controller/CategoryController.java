@@ -2,6 +2,7 @@ package com.wanted.spendtracker.domain.category.controller;
 
 import com.wanted.spendtracker.domain.category.dto.CategoryGetResponse;
 import com.wanted.spendtracker.domain.category.service.CategoryService;
+import com.wanted.spendtracker.global.docs.CategoryControllerDocs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class CategoryController {
+public class CategoryController implements CategoryControllerDocs {
 
     private final CategoryService categoryService;
 
