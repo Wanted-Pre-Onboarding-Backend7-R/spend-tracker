@@ -176,7 +176,10 @@
 
 
 ## API 설계
-Swagger:
+<img src="https://img.shields.io/badge/swagger-%ffffff.svg?style=for-the-badge&logo=swagger&logoColor=white"><br/>
+<img width="700" alt="스크린샷 2023-12-12 오후 8 02 05" src="https://github.com/Wanted-Pre-Onboarding-Backend7-R/spend-tracker/assets/110372498/b5a43525-c5bf-4b64-9f06-cca4077a87a4">
+<img width="700" alt="스크린샷 2023-12-12 오후 8 03 00" src="https://github.com/Wanted-Pre-Onboarding-Backend7-R/spend-tracker/assets/110372498/06a6e458-a48e-41b3-81a6-49599dfeec87">
+
 
 [![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)](https://lush-hen-bac.notion.site/c5f8920838424f85b2ba788bea3225d8?v=3f3d2d66d78942da96ccdab24bbde882&pvs=4)
 
